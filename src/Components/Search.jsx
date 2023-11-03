@@ -3,7 +3,6 @@ import MasonryLayout from './MasonryLayout'
 import Spinner from './Spinner'
 import { client } from '../client'
 import { FeedQuery , searchQuery } from '../utils/data'
-import { set } from 'sanity'
 
 const Search = ({searchTerm}) => {
   const [pins, setPins] = useState(null);
