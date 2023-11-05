@@ -60,6 +60,9 @@ toast("Saving....")
         });
     }
   };
+  let checkProfile =() => {
+    navigate(`/user-profile/${postedBy?._id}`)
+  }
 
   return (
     <div className="mx-3 my-4">
@@ -140,14 +143,14 @@ toast("Saving....")
           </div>
         )}
       </div>
-      <Link to={`/user-profile/${postedBy?._id}`} className="flex gap-2 mt-2 items-center">
+      <div onClick={checkProfile} className="flex gap-2 mt-2 items-center">
         <img
           className="w-8 h-8 rounded-full object-cover"
           src={postedBy?.image}
           alt="user-profile"
         />
         <p className="font-semibold capitalize text-slate-200 text-sm md:lg border-b-2 rounded-md py-2 ">{postedBy?.userName}</p>
-      </Link>
+      </div>
     </div>
   );
 };
