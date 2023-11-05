@@ -86,6 +86,10 @@ const CreatePin = ({user}) => {
       );
     }
   };
+  if(!user){
+    toast.error("Please login to access this page");
+    navigate
+  }
   return (
     <div className="flex flex-col justify-center items-center mt-5 lg:4/5">
       {fields && (
