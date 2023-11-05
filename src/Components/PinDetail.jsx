@@ -1,14 +1,18 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect, useCallback } from "react";
-import { MdDownloadForOffline } from "react-icons/md";
-import { Link, useParams } from "react-router-dom";
+import { MdDownloadForOffline, MdLink } from "react-icons/md";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 
 import { client, urlFor } from "../client";
 import MasonryLayout from "./MasonryLayout";
 import { pinDetailMorePinQuery, pinDetailQuery } from "../utils/data";
 import Spinner from "./Spinner";
+import { IoMdLink } from "react-icons/io";
+import toast from "react-hot-toast";
 
 const PinDetail = ({ user }) => {
+  const navigate = useNavigate()
   const [pins, setPins] = useState(null);
   const [pinDetail, setPinDetail] = useState(null);
   const [comment, setComment] = useState("");
@@ -24,13 +28,16 @@ const PinDetail = ({ user }) => {
           query = pinDetailMorePinQuery(data[0]);
           client.fetch(query).then((res) => {
             setPins(res);
-          });
+          }).catch(err  => toast.error(err.message))
         }
-      });
+      }).catch(err => toast.error(err.message));
     }
   } , [pinId]);
 
   const addComment = useCallback(() => {
+    if(!user){
+      navigate("/login");
+    }
     if(comment){ setAddingComment(true)
     client
     .patch(pinId)
@@ -54,7 +61,7 @@ const PinDetail = ({ user }) => {
     })
     }
 
-  } , [comment, pinId, user?._id, fetchPinDetail])
+  } , [user, comment, navigate, pinId, fetchPinDetail])
   useEffect(() => {
     fetchPinDetail();
   }, [pinId, fetchPinDetail , comment , addComment]);
@@ -62,13 +69,13 @@ const PinDetail = ({ user }) => {
   return (
    <>
      <div
-      className="flex md:flex:row flex-col m-auto  bg-white"
-      style={{ maxWidth: "1500px", borderRadius: "32px" }}
+      className="flex md:flex:row flex-col m-auto  bg-lighter rounded-md"
+      style={{ maxWidth: "1500px"}}
     >
-      <div className="flex justify-center items-center md:items-start flex-initial">
+      <div className="flex justify-center items-center md:items-start flex-initial border-l-4 border-r-4 border-gray-400">
         <img
           src={pinDetail?.image && urlFor(pinDetail.image).url()}
-          className=" rounded-t-3xl rounded-b-lg"
+          className=" rounded-t-lg rounded-b-sm my-5 mx-auto shadow-lg"
           alt="user-post"
         />
       </div>
@@ -84,45 +91,45 @@ const PinDetail = ({ user }) => {
               <MdDownloadForOffline />
             </a>
           </div>
-          <a href={pinDetail.destination} target="blank" rel="norefer">
-            {pinDetail.destination}
+          <a href={pinDetail.destination} className="text-xl bg-gray-100 rounded-sm px-5 opacity-75 text-black hover:opacity-100 py-1 drop-shadow-md" target="blank" rel="norefer">
+          <IoMdLink/>
           </a>
         </div>
         <div>
-          <h1 className="text-4xl font-bold break-words mt-3">
+          <h1 className="text-4xl text-white font-bold break-words mt-3">
             {pinDetail.title}
           </h1>
-          <p className="mt-3">{pinDetail.about}</p>
+          <p className="mt-3 text-gray-300">{pinDetail.about}</p>
         </div>
         <Link
           to={`/user-profile/${pinDetail?.postedBy?._id}`}
-          className="flex gap-2 mt-5 items-center bg-white rounded-lg"
+          className="flex gap-2 mt-5 items-center border-b-2 border-[bg] py-2 w-fit rounded-md"
         >
           <img
             className="w-8 h-8 rounded-full object-cover"
             src={pinDetail.postedBy?.image}
             alt="logo-profile"
           />
-          <p className="font-semibold capitalize">
+          <p className="font-semibold text-white ">
             {" "}
             {pinDetail.postedBy?.userName}
           </p>
         </Link>
-        <h2 className="mt-5 text-2xl">Comments</h2>
+        <h2 className="mt-5 text-2xl text-gray-200">Comments</h2>
         <div className="max-h-370 overflow-y-auto ">
         
          
           {pinDetail?.comments?.map((comment, i) => (
-            <div className="flex gap-2 mt-5 items-center bg-white" key={i}>
+            <div className="flex gap-2 mt-5 items-center bg-lightest overflow-hidden rounded-full px-3 py-1 w-full"  key={i}>
               <img
                 src={comment?.postedBy?.image}
                 alt="user-profile"
                 className="w-10 h-10 rounded-full cursor-pointer"
               />
               <div className="flex flex-col">
-              
-                <p className="font-bold">{comment.postedBy?.userName}</p>
-                <p>{comment.comment}</p>
+            
+                <Link  to={`/user-profile/${comment?.postedBy?._id}`}  className="font-bold text-gray-800 capitalize" >{comment.postedBy?.userName}</Link>
+                <p className="text-gray-200">{comment.comment}</p>
               </div>
             </div>
           ))}
@@ -136,11 +143,11 @@ const PinDetail = ({ user }) => {
          
             <img
               className="w-10 h-10 rounded-full cursor-pointer"
-              src={user?.image}
+              src={user?.image ? user.image : "https://png.pngtree.com/png-vector/20191110/ourmid/pngtree-avatar-icon-profile-icon-member-login-vector-isolated-png-image_1978396.jpg"}
               alt="logo-profile"
             />
           </Link>
-          <input className="flex-1 border-gray-100 outline-none border-2 p-2 rounded-2xl focus:border-gray-300" type="text" placeholder="Add a comment.." value={comment} onChange={(e) => setComment(e.target.value)} />
+          <input className="flex-1 border-gray-100  outline-none border-2 p-2 rounded-2xl focus:border-gray-300" type="text" placeholder="Add a comment.." value={comment} onChange={(e) => setComment(e.target.value)} />
           <button onClick={addComment} type="button" className="bg-red-500 text-white rounded-full px-6 py-2 font-semibold text-base outline-none">
             {addingComment ? 'Posting a comment...' : 'Post'}
           </button>

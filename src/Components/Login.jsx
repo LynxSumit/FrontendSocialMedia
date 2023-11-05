@@ -6,13 +6,14 @@ import logo from "../assets/logowhite.png";
 import { useState } from "react";
 import jwtDecode from "jwt-decode";
 import { client } from "../client";
+import toast from "react-hot-toast";
 const Login = () => {
   const navigate = useNavigate();
 
   
   const googleHandler = (res) => {
     const decode = jwtDecode(res.credential);
-    console.log(decode);
+    
     localStorage.setItem("user", JSON.stringify(decode));
     const { sub, picture, name } = decode;
     const doc = {
@@ -46,7 +47,8 @@ const Login = () => {
             <GoogleLogin
               onSuccess={googleHandler}
               onError={() => {
-                console.log("Login Failed");
+                toast.error("Login Failed")
+                // console.log("Login Failed");
               }}
             />
           </div>

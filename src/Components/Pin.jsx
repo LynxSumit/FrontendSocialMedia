@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 
 import  { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -7,6 +8,7 @@ import { AiTwotoneDelete } from 'react-icons/ai';
 import { BsFillArrowUpRightCircleFill } from 'react-icons/bs';
 
 import { client, urlFor } from '../client';
+import toast from 'react-hot-toast';
 
 const Pin = ({ pin }) => {
   const [postHovered, setPostHovered] = useState(false);
@@ -25,17 +27,20 @@ const [saved, setSaved] = useState([]);
       });
   };
 
-  console.log(pin.save)
+  
   const savePin = (id) => {
-    let alreadySaved = pin?.save?.filter((item) => item?.postedBy?._id === user?.googleId);
+    let alreadySaved = pin?.save?.filter((item) => item?.postedBy?._id === user?.sub);
+    if(alreadySaved){
+      toast("Pin already saved")
     
+    }
     alreadySaved = alreadySaved?.length > 0 ? alreadySaved : [];
     setSaved(alreadySaved)
     
 
     if (alreadySaved?.length === 0) {
       setSavingPost(true);
-
+toast("Saving....")
       client
         .patch(id)
         .setIfMissing({ save: [] })
@@ -50,12 +55,14 @@ const [saved, setSaved] = useState([]);
         .commit()
         .then(() => {
           setSavingPost(false);
+          
+          toast("Saved Successfully. Please wait some time before continuing")
         });
     }
   };
 
   return (
-    <div className="m-2">
+    <div className="mx-3 my-4">
       <div
         onMouseEnter={() => setPostHovered(true)}
         onMouseLeave={() => setPostHovered(false)}
@@ -82,17 +89,21 @@ const [saved, setSaved] = useState([]);
                 </a>
               </div>
               {saved?.length != 0 ? (
-                <button type="button" className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outline-none">
+                <button type="button" className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-3 py-1 text-base rounded-3xl hover:shadow-md outline-none">
                   {pin?.save?.length}  Saved
                 </button>
               ) : (
                 <button
                   onClick={(e) => {
+                    if(!user){
+                      navigate("/login")
+                      return;
+                    }
                     e.stopPropagation();
                     savePin(_id);
                   }}
                   type="button"
-                  className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outline-none"
+                  className="bg-red-500 opacity-70 hover:opacity-100  text-white font-bold px-5 py-1 text-sm md:text-base rounded-3xl hover:shadow-md outline-none"
                 >
                   {pin?.save?.length}   {savingPost ? 'Saving' : 'Save'}
                 </button>
@@ -108,11 +119,11 @@ const [saved, setSaved] = useState([]);
                 >
                   {' '}
                   <BsFillArrowUpRightCircleFill />
-                  {destination?.slice(8, 17)}...
+                  
                 </a>
               ) : undefined}
               {
-           postedBy?._id === user?.googleId && (
+           postedBy?._id === user?.sub && (
            <button
              type="button"
              onClick={(e) => {
@@ -135,7 +146,7 @@ const [saved, setSaved] = useState([]);
           src={postedBy?.image}
           alt="user-profile"
         />
-        <p className="font-semibold capitalize">{postedBy?.userName}</p>
+        <p className="font-semibold capitalize text-slate-200 text-sm md:lg border-b-2 rounded-md py-2 ">{postedBy?.userName}</p>
       </Link>
     </div>
   );

@@ -9,3 +9,29 @@ body{
 .hide-scrollbar::-webkit-scrollbar{
   display: none;
 }
+
+.bg{
+  
+  background: #c31432;
+  background: -webkit-linear-gradient(to right, #240b36, #c31432);
+  background: linear-gradient(to right, #240b36, #c31432); 
+
+}
+.bg-lighter {
+  background: #c31432;
+  background: -webkit-linear-gradient(to right, #501f47, #c31432);
+  background: linear-gradient(to right, #501f47, #c31432);
+}
+
+.bg-lightest {
+  background: #c31432;
+  background: -webkit-linear-gradient(to left, #e39b9b, #c31432);
+  background: linear-gradient(to left, #f69b9b, #c31432);
+}
+
+    
+.bg-neon {
+  background: #240b36;
+  background: -webkit-linear-gradient(to left, #240b36, #851628);
+  background: linear-gradient(to left, #240b36, #871629);
+}

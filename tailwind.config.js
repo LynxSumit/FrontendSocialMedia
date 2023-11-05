@@ -4,6 +4,14 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      
+      backgroundColor: {
+        'neon': 'linear-gradient(135deg, #00FFA1 0%, #0D55FF 100%)',
+      },
+      textColor: {
+        'neon': 'linear-gradient(135deg, #00FFA1 0%, #0D55FF 100%)',
+      },
+    
       margin: {
         320: '320px',
       },
@@ -39,17 +47,17 @@ module.exports = {
         350: '350px',
         620: '620px',
       },
-      textColor: {
-        lightGray: '#F1EFEE',
-        primary: '#FAFAFA',
-        secColor: '#efefef',
-        navColor: '#BEBEBE',
-      },
-      backgroundColor: {
-        mainColor: '#FBF8F9',
-        secondaryColor: '#F0F0F0',
-        blackOverlay: 'rgba(0, 0 ,0 ,0.7)',
-      },
+      // textColor: {
+      //   lightGray: '#F1EFEE',
+      //   primary: '#FAFAFA',
+      //   secColor: '#efefef',
+      //   navColor: '#BEBEBE',
+      // },
+      // backgroundColor: {
+      //   mainColor: '#FBF8F9',
+      //   secondaryColor: '#F0F0F0',
+      //   blackOverlay: 'rgba(0, 0 ,0 ,0.7)',
+      // },
       keyframes: {
         'slide-in': {
           '0%': {
@@ -92,4 +100,5 @@ module.exports = {
   },
   plugins: [],
 };
+
 

@@ -5,12 +5,13 @@ import Home from "./Container/Home"
 import { GoogleOAuthProvider } from "@react-oauth/google"
 import Login from "./Components/Login"
 import './App.css'
+import { Toaster } from "react-hot-toast"
 
 function App() {
   let navigate= useNavigate()
 let User = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
 if(!User){
-  navigate("/login")
+  // navigate("/login")
 }
 
   return (
@@ -19,6 +20,7 @@ if(!User){
       <Route path="login" element={<Login/>}/>
       <Route path="/*" element={<Home/>}/>
     </Routes>
+    <Toaster/>
     </GoogleOAuthProvider>
   )
 }

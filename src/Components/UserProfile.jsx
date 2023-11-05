@@ -8,21 +8,26 @@ import MasonryLayout from "./MasonryLayout"
 import Spinner from "./Spinner"
 
 const UserProfile = () => {
-  const activeBtnStyles = "bg-red-500  text-white font-bold p-2 rounded-full w-20 outline-none transition-all duration-180 ease-linear shadow-lg"
-  const notActiveBtnStyles = "bg-primary text-black mr-4 font-bold p-2 rounded-full w-20 outline-none transition-all duration-180 ease-linear shadow-lg"
+  const activeBtnStyles = "bg-red-500  text-gray-100 font-bold p-2 rounded-full w-20 outline-none transition-all duration-180 ease-linear shadow-lg"
+  const notActiveBtnStyles = "bg-primary text-gray-400 mr-4 font-bold p-2 rounded-full w-20 outline-none transition-all duration-180 ease-linear shadow-lg"
   const RandomImg = 'https://source.unsplash.com/1600x900/?nature,technology,animals,gaming'
   const [user, setUser] = useState(null);
   const [pins, setPins] = useState(null);
   const [text, setText] = useState('Created');
   const [activeBtn, setActiveBtn] = useState('created');
+  const [isloggedInUser, setIsloggedInUser] = useState(true);
   const navigate = useNavigate()
   const {userId} = useParams()
+  let loggedInUser = JSON.parse(localStorage.getItem('user'));
+
+  // if(userId != )
   const logoutfunc = () => {
     localStorage.clear()
     googleLogout()
     navigate("/login")
     
   }
+
   useEffect(() => {
     
   const query = userQuery(userId)
@@ -33,20 +38,23 @@ setUser(res[0])
    
   }, [userId]);
   useEffect(() => {
+    if(loggedInUser.sub != userId){
+  setIsloggedInUser(false)
+}
     if(text === 'Created'){
       const createPinsQuery = userCreatedPinsQuery(userId);
       client.fetch(createPinsQuery).then((res)=>{
         setPins(res)
       })
-    }else if(text=== 'Saved'){
+    }else if(text=== 'Saved' && isloggedInUser == true){
       const savePinsQuery = userSavedPinsQuery(userId);
       client.fetch(savePinsQuery).then((res)=>{
-      console.log(res)
+    
         setPins(res)
       })
 
     }
-  }, [text , userId]);
+  }, [text, userId, isloggedInUser, loggedInUser.sub]);
   if(!user) return <Spinner message="Loading profile"/>
   return (
     <div className="relative pb-2 h-full  justify-center items-center">
@@ -57,12 +65,12 @@ setUser(res[0])
           <img 
           src={user?.image}
           className="rounded-full w-20 h-20 -mt-10  shadow-xl object-cover"/>
-          <h1 className="font-bold text-3xl mt-3 text-center ">{user.userName}</h1>
+          <h1 className="font-bold text-3xl mt-3 text-center text-white ">{user.userName}</h1>
           <div className="absolute top-0 z-1 right-0">
           {
             userId === user._id && (
 
-              <button className="bg-white p-2 m-5 rounded-full cursor-pointer outline-none shadow-lg" onClick={logoutfunc}>
+            isloggedInUser === true &&   <button className="bg-white p-2 m-5 rounded-full cursor-pointer outline-none shadow-lg" onClick={logoutfunc}>
               <AiOutlineLogout   fontSize={30} color="red"/>
              
           
@@ -77,7 +85,7 @@ setUser(res[0])
         </div>
         <div className="text-center mb-7 mt-4" >
           <button type="button" onClick={(e) => {setText(e.target.textContent) ;setActiveBtn('created')}} className={`${activeBtn === 'created' ? activeBtnStyles : notActiveBtnStyles}`}>Created</button>
-          <button type="button" onClick={(e) => {setText(e.target.textContent) ;setActiveBtn('saved')}} className={`${activeBtn === 'saved' ? activeBtnStyles : notActiveBtnStyles}`}>Saved</button>
+         {isloggedInUser == true &&  <button type="button" onClick={(e) => {setText(e.target.textContent) ;setActiveBtn('saved')}} className={`${activeBtn === 'saved' ? activeBtnStyles : notActiveBtnStyles}`}>Saved</button> }
         </div>
         <div className="px-2 ">
           <MasonryLayout pins={pins}/>

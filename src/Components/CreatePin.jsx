@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
@@ -5,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { client } from "../client";
 import Spinner from "../Components/Spinner";
 import { categories } from "../utils/data";
+import toast from "react-hot-toast";
 
 const CreatePin = ({user}) => {
 
@@ -19,7 +21,7 @@ const CreatePin = ({user}) => {
   const navigate = useNavigate();
   const uploadImage = (e) => {
     const { type, name } = e.target.files[0];
-    console.log(type)
+  
     if (
       type === "image/png" ||
       type === "image/svg" ||
@@ -40,6 +42,7 @@ const CreatePin = ({user}) => {
           console.log(1)
         })
         .catch((err) => {
+          toast.error(err.message)
           console.log(err.message);
         });
     } else {
@@ -69,8 +72,9 @@ const CreatePin = ({user}) => {
         category,
       };
       client.create(doc).then(() => {
+        toast("Pin Created Successfully. Please wait for the update to complete")
         navigate('/');
-      });
+      }).catch(err => toast.error(err.message));
     } else {
       setFields(true);
 
@@ -85,13 +89,14 @@ const CreatePin = ({user}) => {
   return (
     <div className="flex flex-col justify-center items-center mt-5 lg:4/5">
       {fields && (
-        <p className="text-red-500 text-xl transition-all duration-150 ease-in">
-          Please fill in all the fields
+      
+        <p className="text-red-600 text-xl transition-all duration-150 ease-in">
+          Please fill all the fields
         </p>
       )}
-      <div className="flex lg:flex-row flex-col justify-center items-center bg-white lg:p-5 p-3 lg:w4/5 w-full ">
+      <div className="flex lg:flex-row flex-col justify-center items-center bg-lighter lg:p-5 p-3 lg:w4/5 w-full ">
         <div className="bg-secondaryColor p-3 flex flex-0.7 w-full">
-          <div className="flex flex-col justify-center items-center border-2 border-dotted border-gray-300 w-full h-420 ">
+          <div className="flex flex-col justify-center items-center border-2 px-2 border-dashed border-gray-300 w-full h-420 ">
             {loading && <Spinner message="Uploading"/>}
             {wrongImageType && <p>Wrong Image...</p>}
             {!imageAsset ? (
@@ -99,11 +104,11 @@ const CreatePin = ({user}) => {
                 <div className="flex flex-col justify-center items-center h-full">
                   <div className="flex flex-col justify-center items-center ">
                     <p className="font-bold text-2xl cursor-pointer">
-                      <AiOutlineCloudUpload />
+                      <AiOutlineCloudUpload className="text-gray-400"/>
                     </p>
-                    <p className="text-lg">Click to upload</p>
+                    <p className="text-lg text-slate-300">Click to upload</p>
                   </div>
-                  <p className="mt-32 text-gray-400">
+                  <p className="mt-32 px-5 text-gray-400">
                     Use high-quality JPG, SVG, PNG, GIF less than 20mb
                   </p>
                 </div>
@@ -141,17 +146,17 @@ const CreatePin = ({user}) => {
             placeholder="Add your title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="outline-none text-lg sm:text-xl font-bold border-b-2 border-gray-200 p-2 "
+            className="flex-1 border-none shadow-md  outline-none  border-slate-300  p-2 rounded-2xl bg-lightest text-white placeholder:text-gray-100 "
           />
            
           {user && (
-            <div className="flex gap-2 items-center my-2 bg-white rounded-lg">
+            <div className="flex gap-2 items-center my-2 rounded-lg">
               <img
-                src={user?.image}
+                src={user.image}
                 alt="user-img"
                 className="w-10 h-10 rounded-full"
               />
-              <p className="font-bold u">{user.userName}</p>
+              <p className="font-bold text-gray-200">{user.userName}</p>
             </div>
           )}
           <input
@@ -159,34 +164,34 @@ const CreatePin = ({user}) => {
             placeholder="What is your pin about"
             value={about}
             onChange={(e) => setAbout(e.target.value)}
-            className="outline-none text-base sm:text-lg  border-b-2 border-gray-200 p-2 "
+            className="flex-1 border-none shadow-md  outline-none  border-slate-300  p-2 rounded-2xl bg-lightest text-white placeholder:text-gray-100 "
           />
           <input
             type="text"
             placeholder="Add a destination link"
             value={destination}
             onChange={(e) => setDestination(e.target.value)}
-            className="outline-none text-base sm:text-lg  border-b-2 border-gray-200 p-2 "
+            className="flex-1 border-none shadow-md  outline-none  border-slate-300  p-2 rounded-2xl bg-lightest text-white placeholder:text-gray-100 "
           />
           <div className="flex flex-col ">
             <div>
               {" "}
-              <p className="mb-2 font-semibold text-lg sm:text-xl">
+              <p className="mb-2 font-semibold text-lg text-gray-200 sm:text-xl">
                 Choose pin category
               </p>
               <select
                 onChange={(e) => setCategory(e.target.value)}
-                className="outline-none w-4/5 text-base border-b-2 border-gray-200 rounded-md p-2 cursor-pointer
+                className="outline-none w-4/5 text-base border-b-2 d-md-none bg-lighter  text-white border-slate-300 rounded-md p-2 cursor-pointer
           "
               >
-                <option value="other" className="bg-white">
+                <option value="other" disabled className=" ">
                   Select Category
                 </option>
                 {categories.map((category, index) => (
                   <option
                     key={index}
                     value={category.name}
-                    className="text-base border-0 outline-none capitalize bg-white text-black"
+                    className="text-base border-0 outline-none capitalize text-gray-700 py-2"
                   >
                     {category.name}
                   </option>
