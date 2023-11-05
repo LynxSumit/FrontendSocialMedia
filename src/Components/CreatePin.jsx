@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
@@ -86,10 +86,15 @@ const CreatePin = ({user}) => {
       );
     }
   };
-  if(!user){
-    toast.error("Please login to access this page");
-    navigate
-  }
+  useEffect(() => {
+    
+  
+    if(!user){
+      toast.error("Please login to access this page");
+      navigate("/login")
+    }
+  }, [navigate, user]);
+  
   return (
     <div className="flex flex-col justify-center items-center mt-5 lg:4/5">
       {fields && (
