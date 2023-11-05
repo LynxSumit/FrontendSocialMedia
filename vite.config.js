@@ -8,7 +8,7 @@ const manifestForShareMe = {
   includeAssets: [
     "favicon.ico",
     "apple-touch-icon.png",
-    "masked-icon.svg",
+    "maskable.png",
   ],
   manifest: {
     name: "Share Me",
@@ -16,39 +16,47 @@ const manifestForShareMe = {
     description: "A Pinterest clone for sharing images and inspiration.",
     icons: [
       {
-        src: "/android-chrome.png",
+        src: "/maskable.png",
+        sizes: "192x192",
+        type: "image/png",
+        purpose: "any"
+      },
+      {
+        src: "/maskable.png",
+        sizes: "192x192",
+        type: "image/png",
+        purpose: "maskable"
+      },
+      {
+        src: "/logo192.png",
         sizes: "192x192",
         type: "image/png",
       },
       {
-        src: "/android-chrome.png",
+        src: "/logo256.png",
+        sizes: "256x256",
+        type: "image/png",
+      },
+      {
+        src: "/logo384.png",
+        sizes: "384x384",
+        type: "image/png",
+      },
+      {
+        src: "/logo512.png",
         sizes: "512x512",
         type: "image/png",
       },
-      {
-        src: "/apple-touch-icon.png",
-        sizes: "180x180",
-        type: "image/png",
-        purpose: "apple touch icon",
-      },
-      {
-        src: "/favicon.png",
-        sizes: "192x192",
-        type: "image/png",
-        purpose: "any maskable",
-      },
-    ],
-    
-  "theme_color": "#000000",
-  "background_color": "#ffffff",
-  "display": "standalone",
-  "scope": "/",
-  "start_url": "/",
-"prefer-related-applications" : true
-  },
-};
+    ]
+    },
+    theme_color: "#000000",
+    background_color: "#ffffff",
+    display: "standalone",
+    scope: "/",
+    start_url: "/",
+  }
 
 export default defineConfig({
-  plugins: [react(), VitePWA()],
+  plugins: [react(), VitePWA(manifestForShareMe)],
   
 })

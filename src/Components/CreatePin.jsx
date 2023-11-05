@@ -51,6 +51,11 @@ const CreatePin = ({user}) => {
   };
 
   const savePin = () => {
+    if(!user){
+      toast.error("Please login to access this page");
+      navigate("/login")
+      return;
+    }
     if (title && about && destination && imageAsset?._id && category) {
       const doc = {
         _type: 'pin',
@@ -86,14 +91,7 @@ const CreatePin = ({user}) => {
       );
     }
   };
-  useEffect(() => {
-    
-  
-    if(!user){
-      toast.error("Please login to access this page");
-      navigate("/login")
-    }
-  }, [navigate, user]);
+ 
   
   return (
     <div className="flex flex-col justify-center items-center mt-5 lg:4/5">

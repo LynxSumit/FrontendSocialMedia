@@ -34,7 +34,7 @@ Home
           </div>
       </div>
       {user && (
-        <Link to={`user-profile/${user._id}`} onClick={handleCloseSidebar} className='flex my-5 mb-3 gap-2 px-2 py-1 items-center bg-gray-400 text-white  shadow-2xl rounded-lg  mx-3 '>
+        <Link to={`/user-profile/${user._id}`} onClick={handleCloseSidebar} className='flex my-5 mb-3 gap-2 px-2 py-1 items-center bg-gray-400 text-white  shadow-2xl rounded-lg  mx-3 '>
           <img src={user.image} className='w-10 h-10 rounded-full' alt="user-profile"/>
           <p>{user.userName}</p>
         </Link>

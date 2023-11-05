@@ -10,9 +10,7 @@ import { Toaster } from "react-hot-toast"
 function App() {
   let navigate= useNavigate()
 let User = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
-if(!User){
-  // navigate("/login")
-}
+
 
   return (
     <GoogleOAuthProvider clientId="712244245266-fmk04ngf034bbsp65fu152ip157juagk.apps.googleusercontent.com">
