@@ -24,9 +24,16 @@ const Feed = () => {
         setLoading(false)
       })
     }
+    
   }, [categoryId]);
-  if(!pins?.length) return <NotFound/>
-  if(loading) return <Spinner message="We are adding new ideas to your feed"/>
+  
+  if(loading){
+    
+    return <Spinner message="Loading"/>}
+  if( pins?.length  == 0 && !loading ) {
+    
+    console.log("Hello")
+    return <NotFound/>}
 
   return (
     <div>
