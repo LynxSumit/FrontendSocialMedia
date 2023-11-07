@@ -75,7 +75,7 @@ const PinDetail = ({ user }) => {
       <div className="flex justify-center items-center md:items-start flex-initial border-l-4 border-r-4 border-gray-400">
         <img
           src={pinDetail?.image && urlFor(pinDetail.image).url()}
-          className=" rounded-t-lg rounded-b-sm my-5 mx-auto shadow-lg"
+          className=" rounded-t-lg rounded-b-sm my-5 mx-auto h-2/3 w-2/3 md:h-1/3 md:w-1/3  shadow-lg"
           alt="user-post"
         />
       </div>
