@@ -34,13 +34,16 @@ useEffect(() => {
     </div>
     <div className="flex md:hidn flex-row">
       <div className="p-2 w-full md:h-20 flex flex-row justify-between  mx-8 items-center shadow-md">
-        <HiMenu fontSize={40} className="cursor-pointer" onClick={() => setToggleSidebar(true)} />
+        <HiMenu fontSize={40} className="cursor-pointer text-white" onClick={() => setToggleSidebar(true)} />
         <Link to="/">
           <img src={logo} alt="logo" className="w-28" />
         </Link>
+        {
+          user &&
         <Link to={`user-profile/${user?._id}`}>
           <img src={user?.image} alt="user-pic" className="w-9 h-9 md:w-14 md:h-14 rounded-full " />
         </Link>
+        }
       </div>
       {toggleSidebar && (
       <div className="fixed  md:w-1/4 w-full    bg-white h-screen overflow-y-auto shadow-md z-10 animate-slide-in">
