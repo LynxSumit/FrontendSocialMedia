@@ -56,7 +56,7 @@ toast("Saving....")
         .then(() => {
           setSavingPost(false);
           
-          toast("Saved Successfully. Please wait some time before continuing")
+          toast("Saved Successfully.")
         });
     }
   };

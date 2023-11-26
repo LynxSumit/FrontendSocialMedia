@@ -77,7 +77,7 @@ const CreatePin = ({user}) => {
         category,
       };
       client.create(doc).then(() => {
-        toast("Pin Created Successfully. Please wait for the update to complete")
+        toast.success("Pin Created Successfully.")
         navigate('/');
       }).catch(err => toast.error(err.message));
     } else {

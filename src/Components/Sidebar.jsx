@@ -13,7 +13,7 @@ const Sidebar = ({user , closeToggle}) => {
     const isNotActiveStyle = "flex items-center px-5 gap-3 text-gray-400 hover:text-white transition-all duration-200 ease-in-out capitalize"
     const isActiveStyle = "flex items-center px-5 gap-3 font-extrabold text-slate-200  border-r-2 border-black transition-all duration-200 ease-in-out capitalize"
   return (
-    <div className='flex flex-col justify-between bg h-full overflow-y-scroll  min-w-210 '>
+    <div className='flex flex-col justify-between bg h-full  overflow-y-scroll   '>
     
       <div className='flex flex-col'>
         <Link to="/" className='flex px-5 my-6 w-190 items-center'>
